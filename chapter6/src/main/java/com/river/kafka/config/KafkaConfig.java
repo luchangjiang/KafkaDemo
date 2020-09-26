@@ -1,6 +1,6 @@
 package com.river.kafka.config;
 
-import com.river.kafka.consumer.ConsumerService;
+import com.river.kafka.consumer.ConsumerService1;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.common.serialization.IntegerDeserializer;
@@ -13,9 +13,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.kafka.annotation.EnableKafka;
 import org.springframework.kafka.config.ConcurrentKafkaListenerContainerFactory;
 import org.springframework.kafka.core.*;
-import org.springframework.kafka.listener.ContainerProperties;
-import org.springframework.kafka.listener.KafkaMessageListenerContainer;
-import org.springframework.kafka.listener.MessageListenerContainer;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -30,7 +27,7 @@ import java.util.Map;
 @EnableKafka
 public class KafkaConfig {
     @Autowired
-    public ConsumerService consumerService;
+    public ConsumerService1 consumerService;
 
     //ConcurrentKafkaListenerContainerFactory为创建Kafka监听器的工程类，这里只配置了消费者
     @Bean
@@ -97,15 +94,5 @@ public class KafkaConfig {
         //值的序列化方式
         props.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
         return props;
-    }
-
-    @Bean
-    public KafkaMessageListenerContainer demoListenerContainer() {
-        ContainerProperties properties = new ContainerProperties("topic5");
-
-        properties.setGroupId("bean");
-        properties.setMessageListener(consumerService);
-
-        return new KafkaMessageListenerContainer(consumerFactory(), properties);
     }
 }
